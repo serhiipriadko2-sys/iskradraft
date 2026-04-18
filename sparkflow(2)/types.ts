@@ -1,4 +1,6 @@
 
+import type { Dispatch, SetStateAction } from 'react';
+
 export enum ToolType {
   LOAD_ANALYZER = 'load_analyzer',
   COMPONENT_SELECTOR = 'component_selector',
@@ -175,36 +177,36 @@ export interface LayerConfig {
 // Global Context Type
 export interface ProjectContextType {
   projectName: string;
-  setProjectName: (name: string) => void;
+  setProjectName: Dispatch<SetStateAction<string>>;
   
   metadata: ProjectMetadata;
-  setMetadata: (meta: ProjectMetadata) => void;
+  setMetadata: Dispatch<SetStateAction<ProjectMetadata>>;
 
   // Data
   loads: LoadItem[];
-  setLoads: (loads: LoadItem[]) => void;
+  setLoads: Dispatch<SetStateAction<LoadItem[]>>;
   updateLoadPhase: (id: string, phase: 'L1' | 'L2' | 'L3' | 'ABC') => void;
   
   panelConfig: PanelConfig | null;
-  setPanelConfig: (config: PanelConfig) => void;
+  setPanelConfig: Dispatch<SetStateAction<PanelConfig | null>>;
   
   floorPlanElements: PlanElement[];
-  setFloorPlanElements: (elements: PlanElement[]) => void;
+  setFloorPlanElements: Dispatch<SetStateAction<PlanElement[]>>;
 
   walls: Wall[];
-  setWalls: (walls: Wall[]) => void;
+  setWalls: Dispatch<SetStateAction<Wall[]>>;
 
   cableRuns: CableRun[];
-  setCableRuns: (runs: CableRun[]) => void;
+  setCableRuns: Dispatch<SetStateAction<CableRun[]>>;
 
   floorPlanBackgroundImage: string | null;
-  setFloorPlanBackgroundImage: (dataUrl: string | null) => void;
+  setFloorPlanBackgroundImage: Dispatch<SetStateAction<string | null>>;
 
   roomDimensions: RoomDimensions;
-  setRoomDimensions: (dims: RoomDimensions) => void;
+  setRoomDimensions: Dispatch<SetStateAction<RoomDimensions>>;
   
   specification: SpecificationItem[];
-  setSpecification: (items: SpecificationItem[]) => void;
+  setSpecification: Dispatch<SetStateAction<SpecificationItem[]>>;
   addToSpecification: (items: SpecificationItem[]) => void;
   updateSpecificationItem: (id: string, updates: Partial<SpecificationItem>) => void;
   clearSpecification: () => void;
