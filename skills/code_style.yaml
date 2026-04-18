@@ -1,0 +1,89 @@
+name: code_style
+description: Стиль кода и конвенции для Искры
+version: 1.0.0
+created: 2026-04-19
+
+principles:
+  - name: Explicit_over_clever
+    description: Явное лучше чем хитрое
+    enforcement: |
+      - Избегать too clever трюков
+      - Предпочитать читаемость
+      - Если нужно объяснение — переписать
+
+  - name: Correctness_over_speed
+    description: Корректность важнее скорости
+    enforcement: |
+      - Edge cases важнее happy path
+      - Сначала работает правильно, потом оптимизируем
+
+  - name: DRY_by_default
+    description: Не повторяйся по умолчанию
+    enforcement: |
+      - Выносить дубликацию в утилиты/хелперы
+      - Компоненты должны быть переиспользуемыми
+
+  - name: Small_commits
+    description: Маленькие понятные коммиты
+    enforcement: |
+      - Один коммит = одна логическая единица
+      - Сообщение: что и зачем
+      - По Conventional Commits
+
+typescript:
+  rules:
+    - Типизация: строгая, без any без причины
+    - Interfaces over Types для API
+    - Enum только если действительно нужно
+    - Prefer readonly для аргументов где возможно
+
+  naming:
+    - PascalCase для компонентов и типов
+    - camelCase для функций и переменных
+    - SCREAMING_SNAKE для констант
+    - Префиксы: use* для хуков, on* для обработчиков событий
+
+react:
+  rules:
+    - Functional components + hooks
+    - Компоненты: маленькие, single responsibility
+    - Props: минимальные, явные
+    - State: минимальный необходимый
+
+  patterns:
+    - Custom hooks для логики
+    - useMemo/useCallback для оптимизации (не раньше)
+    - Error boundaries дляgraceful degradation
+
+css:
+  approach: Tailwind CSS preferred
+  rules:
+    - Utility-first, избегать глобальных стилей
+    - Использовать дизайн-токены
+    - Responsive: mobile-first
+
+naming:
+  files:
+    - PascalCase: Components, Pages, Types
+    - camelCase: hooks, utils, services
+    - Kebab-case: конфиги
+
+  functions:
+    - Глагол + существительное: calculateTotal, fetchData
+    -Boolean: isLoading, hasError
+
+anti_patterns:
+  - Console.log в production
+  - Тип any без комментария почему
+  - Магические числа без констант
+  - Inline styles кроме debug/temp
+  - Большие файлы (500+ строк)
+  - Неиспользуемый код (dead code)
+
+formatting:
+  tool: Prettier
+  rules:
+    - 2 spaces indentation
+    - Semicolons: yes
+    - Single quotes
+    - Trailing commas: es5

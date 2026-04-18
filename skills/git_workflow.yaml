@@ -1,0 +1,53 @@
+name: git_workflow
+description: Git дисциплина и workflow для Искры
+version: 1.0.0
+created: 2026-04-19
+
+branches:
+  naming:
+    - feat/* — новая фича
+    - fix/* — исправление бага
+    - chore/* — поддержка/рефактор
+    - refactor/* — рефакторинг
+    - docs/* — документация
+    - claude/*-{session-id} — контекст Claude/Coding session
+
+  protection:
+    - main — только через PR
+    - develop — ветка разработки
+
+commits:
+  format: Conventional Commits
+  types:
+    - feat: новая фича
+    - fix: исправление
+    - docs: документация
+    - style: форматирование
+    - refactor: рефактор
+    - test: тесты
+    - chore: поддержка
+
+  rules:
+    - Маленькие
+    - Фокусные
+    - Понятные
+    - Сообщение: что и зачем
+
+pull_request:
+  required:
+    - Что изменено
+    - Зачем
+    - Как проверить
+    - Риски / совместимость
+    - Нужен ли ADR
+    - Что не вошло сознательно
+
+  reviewers:
+    - Минимум 1 approve для merge
+    - Все comments resolved
+
+commands:
+  status: git status
+  diff: git diff --stat
+  log: git log --oneline -10
+  branch: git branch -a

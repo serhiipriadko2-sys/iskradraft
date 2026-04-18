@@ -1,0 +1,67 @@
+name: ai_service_patterns
+description: Паттерны для AI сервисов (Gemini) в Искре
+version: 1.0.0
+created: 2026-04-19
+
+abstraction:
+  - Никогда не использовать AI напрямую в компонентах
+  - Все AI вызовы через service layer
+  - Интерфейс должен быть vendor-agnostic
+
+patterns:
+  - name: Service_interface
+    description: Абстрактный интерфейс для AI провайдера
+    example: |
+      interface AIService {
+        analyzeLoads(loads: LoadItem[]): Promise<AnalysisResult>
+        selectComponent(req: ComponentRequest): Promise<ComponentResult>
+      }
+
+  - name: Fallback_strategy
+    description: Graceful degradation при недоступности AI
+    implementation: |
+      - Кешировать предыдущие ответы
+      - Предлагать ручной ввод
+      - Показывать понятные ошибки
+
+  - name: Request_validation
+    description: Валидация входящих данных перед AI вызовом
+    enforcement: |
+      - Проверять типы
+      - Проверять диапазоны значений
+      -Sanitize input
+
+  - name: Response_parsing
+    description: Безопасный парсинг ответа AI
+    implementation: |
+      - Всегда оборачивать в try/catch
+      - Проверять структуру ответа
+      - Использовать schema validation
+
+gemini_specific:
+  - model: gemini-2.5-flash (default)
+  - responseMimeType: application/json
+  - Использовать responseSchema для типизации
+  -cleanAndParseJson helper для очистки markdown
+
+error_handling:
+  - Все async функции должны иметь try/catch
+  - Логировать ошибки с контекстом
+  - Показывать user-friendly сообщения ( НЕ alert() )
+  - Использовать Toast/Notification вместо alert
+
+caching:
+  - Кешировать повторяющиеся запросы
+  - Использовать request deduplication
+  - Consider offline-first approach
+
+rate_limits:
+  - Реализовать retry с backoff
+  - Не делать параллельные вызовы без очереди
+  - Показывать loading states
+
+anti_patterns:
+  - AI вызовы в component body (без useEffect)
+  - Прямая зависимость от vendor в компонентах
+  - Отсутствие error handling
+  - Использование alert() для ошибок

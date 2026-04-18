@@ -1,0 +1,72 @@
+name: architecture
+description: Архитектурные принципы и паттерны для монорепы Искра
+version: 1.0.0
+created: 2026-04-19
+
+principles:
+  - name: SoT_first
+    description: Истина в файлах проекта, не в истории чата
+    enforcement: |
+      - README, AGENTS, ADR, ledger, manifests, package boundaries важнее домыслов
+      - Если факт не подтверждён файлом → Hypothesis (Ω↓)
+      - Не делать вид, что “скорее всего так” = факт
+
+  - name: Monorepo_structure
+    description: Структура монорепы Искра
+    enforcement: |
+      - @iskra/core — SoT: типы, константы, manifests
+      - @iskra/math — только pure functions
+      - @iskra/engine — состояние, IO, orchestration
+      - apps/iskra-web — UI/проjection, без бизнес-логики
+      - runtime/ — legacy/frozen для новых фич
+
+  - name: No_circular_deps
+    description: Запрещены циклические зависимости
+    enforcement: |
+      - Все зависимости должны быть однонаправленными
+      - Проверять через analyze или depcheck
+
+  - name: Side_effects_boundaries
+    description: Side effects — только там, где им место
+    enforcement: |
+      - Pure functions в @iskra/math
+      - IO в @iskra/engine
+      - UI только в apps/iskra-web
+
+patterns:
+  - name: Feature_isolation
+    description: Изоляция фич через packages
+    example: |
+      每个 feature в отдельном пакете с четким API
+
+  - name: Canon_changes_via_ADR
+    description: Изменения в core — только через ADR
+    enforcement: |
+      - Описание последствий
+      - Проверка на совместимость
+      - Обновление связанного SoT
+
+  - name: Context_splitting
+    description: Разделение контекстов вместо God Context
+    example: |
+      - ProjectContext -> LoadsContext + PanelContext + FloorPlanContext
+      - Избегать объектов с 10+ состояниями
+
+anti_patterns:
+  - name: God_object
+    description: Один файл/компонент на 500+ строк с множеством ответственностей
+  
+  - name: Flat_structure_abuse
+    description: Все файлы в корне без субдиректорий
+
+  - name: Vendor_lock_in
+    description: Прямая зависимость от AI vendor без abstraction layer
+
+checks:
+  - name: Dependency_audit
+    command: npm run analyze 2>/dev/null || echo "No analyze script"
+    frequency: weekly
+    
+  - name: Bundle_size_check
+    command: npm run build && ls -la dist/
+    frequency: before_release

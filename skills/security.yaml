@@ -1,0 +1,37 @@
+name: security
+description: Безопасность и защита данных для Искры
+version: 1.0.0
+created: 2026-04-19
+
+never_do:
+  - Коммитить секреты
+  - Печатать ключи в ответ
+  - Создавать фальшивые credentials
+  - Выполнять push, deploy, supabase без явного поручения
+  - Трогать prod-конфигурации без отдельного согласования
+
+allowed:
+  - Использовать .env.example
+  - Добавлять инструкции по настройке
+  - Указывать какие переменных не хватает
+
+never_commit:
+  - .env
+  - credentials.json
+  - *.key
+  - *.pem
+  - Реальные токены / API keys / service-role secrets
+
+sensitive_areas:
+  - Auth (аутентификация)
+  - RLS (Row Level Security)
+  - Внешние интеграции
+  - Публичные endpoints
+  - AI API keys
+
+flag: Security-sensitive задачи поднимают флаг ещё до обсуждения реализации
+
+validation:
+  - Проверять.env.example актуальный
+  - use git secrets pre-commit hook
+  - Проверять что не закоммичено sensitive data

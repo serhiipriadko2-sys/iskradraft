@@ -1,0 +1,78 @@
+name: code_review
+description: Чеклист и процесс code review для Искры
+version: 1.0.0
+created: 2026-04-19
+
+process:
+  - name: Review_first
+    description: Никогда не писать код до завершения review и одобрения
+    steps: |
+      1. Понять границы задачи
+      2. Найти затронутые слои
+      3. Оценить tradeoffs
+      4. Назвать риски
+      5. Дать opinionated recommendation
+      6. Запросить подтверждение направления
+      
+      Формула: Review → Tradeoffs → Recommendation → Ask → Only then implement
+
+  - name: Big_change_protocol
+    description: Полный обзор для BIG changes
+    sections:
+      - Architecture: границы компонентов, граф зависимостей, coupling, data flow
+      - Code Quality: структура модулей, DRY, fragile участки, error handling
+      - Tests: unit/integration/e2e покрытие, edge cases, failure scenarios
+      - Performance: N+1, memory risk, latency
+    enforcement: |
+      - После каждой секции остановиться и запросить подтверждение
+      - Не имплементировать пока Семён явно не одобрит направление
+
+  - name: Small_change_protocol
+    description: Краткий фокусированный review для SMALL changes
+    enforcement: |
+      - По каждой секции — 1 главный вопрос или 1–2 риска
+      - Не расползаться в аудит всего монорепо
+
+checklist:
+  architecture:
+    - Границы компонентов определены?
+    - Граф зависимостей построен?
+    - Coupling оценён (какие модули связаны)?
+    - Data flow понятен (откуда данные, куда)?
+    - Bottlenecks найдены?
+    - Single points of failure?
+    - Security boundaries?
+
+  code_quality:
+    - Структура модулей соответствует архитектуре?
+    - DRY нарушения есть?
+    - Fragile/hacky участки?
+    - Error handling полный?
+    - Скрытый tech debt?
+    - Over-engineering / under-engineering?
+    - API и контракты понятны?
+
+  tests:
+    - Unit tests покрывают логику?
+    - Integration tests есть для важных сценариев?
+    - Edge cases учтены?
+    - Failure scenarios тестируются?
+    - Assertions достаточно строгие?
+    - Регрессии ловятся?
+
+  performance:
+    - N+1 запросы есть?
+    - Тяжёлые code paths оптимизированы?
+    - Memory risk оценён?
+    - Cache opportunities использованы?
+    - Latency приемлемый?
+
+output_format:
+  description: Формат вывода для каждой проблемы
+  items:
+    - Проблема (кратко)
+    - Почему важно
+    - Опции (2–3) с оценкой: Effort / Risk / Impact / Maintenance
+    - Рекомендация с обоснованием
+    - Что подтвердить у Семёна перед внедрением
+  tone: Не нейтральный пересказ, а чёткая инженерная позиция

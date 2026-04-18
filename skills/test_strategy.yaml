@@ -1,0 +1,63 @@
+name: test_strategy
+description: Стратегия тестирования для Искры
+version: 1.0.0
+created: 2026-04-19
+
+principles:
+  - name: Tests_mandatory
+    description: Хорошо протестированный код — норма, не опция
+    enforcement: |
+      - Лучше слишком много тестов чем слишком мало
+      - Тестировать не только happy path
+      - Добавлять regression tests на найденные баги
+
+  - name: Test_pyramid
+    description: Пирамида тестов
+    layers:
+      - Unit: 70% (быстрые, изолированные)
+      - Integration: 20% (взаимодействие компонентов)
+      - E2E: 10% (критические пользовательские сценарии)
+
+frameworks:
+  - Vitest (recommended for React/TypeScript projects)
+  - React Testing Library для компонентов
+
+coverage_targets:
+  minimum:
+    - Functions: 80%
+    - Branches: 70%
+    critical_paths: 100%
+
+what_to_test:
+  pure_functions:
+    - Все электрические формулы (electricalFormulas.ts)
+    - Калькуляторы (materialCalculator.ts)
+    - Утилиты парсинга
+
+  components:
+    - Рендеринг
+    - User interactions
+    - Conditional rendering
+    - Props validation
+
+  integration:
+    - Context providers
+    - Data flow между компонентами
+    - Сохранение/загрузка (localStorage)
+
+anti_patterns:
+  - Тесты которые всегда pass
+  - Слабые assertions (только проверка что не упало)
+  - No edge cases
+  - Тестирование implementation details
+  - Missing failure scenarios
+
+test_naming:
+  - describe: что тестируем
+  - it: ожидаемое поведение
+  - example: calculateVoltageDrop_returnsZeroForZeroPower
+
+runners:
+  - npm test — unit tests
+  - npm run test:ui — interactive mode
+  - CI: npm run verify (typecheck + test)

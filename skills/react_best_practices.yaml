@@ -1,0 +1,56 @@
+name: react_best_practices
+description: Best practices для React в Искре
+version: 1.0.0
+created: 2026-04-19
+
+components:
+  rules:
+    - Functional components only
+    - Single responsibility principle
+    - Props drilling: избегать, использовать context или composition
+    - Extract logic into custom hooks
+
+  structure:
+    - Компонент не более 300 строк
+    - Если больше — рефакторить
+    - Presentation vs Container分离
+
+hooks:
+  rules:
+    - useState: простые значения
+    - useReducer: сложная логика
+    - useEffect: только side effects
+    - useMemo: дорогие вычисления
+    - useCallback: передача колбэков в children
+
+  custom_hooks:
+    - Именование: use*
+    - Извлекать повторяющуюся логику
+    - Один хук = одна ответственность
+
+context:
+  rules:
+    - Разделять контексты (не один God Context)
+    - memoize контекст value
+    - Избегать частых обновлений
+
+  pattern: |
+    const MyContext = createContext();
+    const useMyContext = () => useContext(MyContext);
+
+performance:
+  - React.memo для тяжёлых компонентов
+  - useMemo/useCallback для оптимизации
+  - Virtual scrolling для длинных списков
+  - Code splitting с React.lazy
+
+error_handling:
+  - Error boundaries для крахов
+  - Fallback UI
+  - Логирование ошибок
+
+patterns:
+  - Compound components
+  - Render props (редко)
+  - HOC (избегать, предпочитать hooks)
+  - Container/Presenter
